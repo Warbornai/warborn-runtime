@@ -5,14 +5,15 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgentRegistry = void 0;
+const types_1 = require("@warborn/types");
 class AgentRegistry {
     agents = new Map();
     registerAgent(config) {
-        const agentId = config.agentId;
+        const agentId = config.id;
         const instance = {
             agentId,
             config,
-            status: 'idle',
+            status: types_1.ExecutionStatus.IDLE,
             currentMissionId: undefined,
             lastActiveAt: new Date().toISOString(),
         };

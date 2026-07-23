@@ -2,7 +2,7 @@
  * Decoupled In-Memory Event Bus & PubSub Adapter Engine.
  * @module @warborn/runtime/events
  */
-import { EventEnvelope, EventTopic } from '@warborn/types/events';
+import { EventEnvelope, EventTopic } from '@warborn/types';
 export type EventCallback<T = any> = (event: EventEnvelope<T>) => void | Promise<void>;
 export declare class EventBus {
     private readonly listeners;

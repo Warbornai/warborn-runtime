@@ -32,7 +32,6 @@ class WarbornBrain {
         const lastUserMessage = messages.filter(m => m.role === 'user').pop();
         const promptText = lastUserMessage ? lastUserMessage.content : 'No query provided';
         return {
-            messageId: `msg_${Date.now()}`,
             content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
             role: 'assistant',
             modelId: this.config.providers.openai.defaultModel,

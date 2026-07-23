@@ -3,18 +3,17 @@
  * @module @warborn/runtime/agents
  */
 
-import { AgentId, AgentConfig, AgentInstance, AgentRole } from '@warborn/types/agent';
-import { ISO8601Timestamp } from '@warborn/types/common';
+import { AgentId, AgentConfig, AgentInstance, ISO8601Timestamp, ExecutionStatus } from '@warborn/types';
 
 export class AgentRegistry {
   private readonly agents = new Map<AgentId, AgentInstance>();
 
   public registerAgent(config: AgentConfig): AgentInstance {
-    const agentId = config.agentId;
+    const agentId = config.id;
     const instance: AgentInstance = {
       agentId,
       config,
-      status: 'idle',
+      status: ExecutionStatus.IDLE,
       currentMissionId: undefined,
       lastActiveAt: new Date().toISOString() as ISO8601Timestamp,
     };

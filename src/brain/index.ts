@@ -4,9 +4,8 @@
  * @module @warborn/runtime/brain
  */
 
-import { BrandedId, ISO8601Timestamp } from '@warborn/types/common';
-import { AgentConfig } from '@warborn/types/agent';
-import { ChatMessage, ChatResponse } from '@warborn/types/chat';
+import { BrandedId, ISO8601Timestamp } from '@warborn/types';
+import { ChatMessage, ChatResponse } from '@warborn/types';
 import { PlatformConfig, getPlatformConfig } from '@warborn/config';
 
 export interface BrainPlan {
@@ -50,7 +49,6 @@ export class WarbornBrain {
     const promptText = lastUserMessage ? lastUserMessage.content : 'No query provided';
 
     return {
-      messageId: `msg_${Date.now()}` as BrandedId<'MessageId'>,
       content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
       role: 'assistant',
       modelId: this.config.providers.openai.defaultModel,

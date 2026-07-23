@@ -2,7 +2,7 @@
  * Multi-Provider AI Routing and Fallback Engine.
  * @module @warborn/runtime/providers
  */
-import { ProviderConfig, ProviderType } from '@warborn/types/provider';
+import { ProviderConfig, ProviderType } from '@warborn/types';
 export declare class ProviderRegistry {
     private readonly providers;
     constructor();

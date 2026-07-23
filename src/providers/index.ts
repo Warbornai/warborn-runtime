@@ -3,7 +3,7 @@
  * @module @warborn/runtime/providers
  */
 
-import { ProviderConfig, ProviderType } from '@warborn/types/provider';
+import { ProviderConfig, ProviderType } from '@warborn/types';
 import { getPlatformConfig } from '@warborn/config';
 
 export class ProviderRegistry {

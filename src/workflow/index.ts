@@ -3,8 +3,7 @@
  * @module @warborn/runtime/workflow
  */
 
-import { Mission, MissionId, WorkflowStep } from '@warborn/types/workflow';
-import { ISO8601Timestamp } from '@warborn/types/common';
+import { Mission, MissionId, WorkflowStep, ISO8601Timestamp } from '@warborn/types';
 
 export class WorkflowEngine {
   private readonly missions = new Map<MissionId, Mission>();

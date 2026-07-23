@@ -3,8 +3,7 @@
  * @module @warborn/runtime/events
  */
 
-import { EventEnvelope, EventId, EventTopic } from '@warborn/types/events';
-import { ISO8601Timestamp } from '@warborn/types/common';
+import { EventEnvelope, EventId, EventTopic, ISO8601Timestamp } from '@warborn/types';
 
 export type EventCallback<T = any> = (event: EventEnvelope<T>) => void | Promise<void>;
 

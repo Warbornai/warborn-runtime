@@ -3,8 +3,7 @@
  * @module @warborn/runtime/context
  */
 
-import { MemoryRecord, MemoryId, ContextChunk, EmbeddingVector } from '@warborn/types/context';
-import { ISO8601Timestamp } from '@warborn/types/common';
+import { MemoryRecord, MemoryId, ContextChunk, ISO8601Timestamp } from '@warborn/types';
 
 export class MemoryManager {
   private readonly memories = new Map<MemoryId, MemoryRecord>();

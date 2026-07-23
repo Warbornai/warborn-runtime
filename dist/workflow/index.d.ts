@@ -2,7 +2,7 @@
  * Workflow Execution and Mission Engine.
  * @module @warborn/runtime/workflow
  */
-import { Mission, MissionId, WorkflowStep } from '@warborn/types/workflow';
+import { Mission, MissionId, WorkflowStep } from '@warborn/types';
 export declare class WorkflowEngine {
     private readonly missions;
     createMission(title: string, steps: readonly WorkflowStep[]): Mission;
