@@ -3,21 +3,20 @@
  * @module @warborn/runtime/context
  */
 
-import { MemoryRecord, MemoryId, ContextChunk, ISO8601Timestamp } from '@warborn/types';
+import { MemoryRecord, MemoryId, ContextChunk, ISO8601Timestamp, MemoryType } from '@warborn/types';
 
 export class MemoryManager {
   private readonly memories = new Map<MemoryId, MemoryRecord>();
 
-  public storeMemory(content: string, type: 'short_term' | 'long_term' | 'episodic' | 'semantic'): MemoryRecord {
-    const memoryId = `mem_${Date.now()}` as MemoryId;
+  public storeMemory(content: string, type: MemoryType): MemoryRecord {
+    const id = `mem_${Date.now()}` as MemoryId;
     const record: MemoryRecord = {
-      memoryId,
+      id,
       type,
       content,
-      importance: 0.8,
       createdAt: new Date().toISOString() as ISO8601Timestamp,
-    };
-    this.memories.set(memoryId, record);
+    } as any;
+    this.memories.set(id, record);
     return record;
   }
 
@@ -34,10 +33,10 @@ export class ContextEngine {
   public async assembleContext(userQuery: string): Promise<readonly ContextChunk[]> {
     const relevantMemories = this.memoryManager.searchMemories(userQuery);
     return relevantMemories.map(m => ({
-      chunkId: `chunk_${m.memoryId}` as any,
-      content: m.content,
-      relevanceScore: m.importance,
-      source: m.type,
+      id: `chunk_${m.id}` as any,
+      text: m.content,
+      score: 0.8,
+      source: String(m.type),
     }));
   }
 }

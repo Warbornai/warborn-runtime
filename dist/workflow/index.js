@@ -5,15 +5,17 @@
  */
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WorkflowEngine = void 0;
+const types_1 = require("@warborn/types");
 class WorkflowEngine {
     missions = new Map();
     createMission(title, steps) {
         const missionId = `mission_${Date.now()}`;
         const mission = {
+            id: missionId,
             missionId,
             title,
             description: `Mission for ${title}`,
-            status: 'pending',
+            status: types_1.ExecutionStatus.PENDING,
             steps,
             createdAt: new Date().toISOString(),
         };

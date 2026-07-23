@@ -4,8 +4,7 @@
  * @module @warborn/runtime/brain
  */
 
-import { BrandedId, ISO8601Timestamp } from '@warborn/types';
-import { ChatMessage, ChatResponse } from '@warborn/types';
+import { BrandedId, ISO8601Timestamp, ChatMessage, ChatResponse, MessageRole } from '@warborn/types';
 import { PlatformConfig, getPlatformConfig } from '@warborn/config';
 
 export interface BrainPlan {
@@ -45,16 +44,25 @@ export class WarbornBrain {
 
   /** Orchestrate reasoning and return response using active provider router */
   public async processReasoningRequest(messages: readonly ChatMessage[]): Promise<ChatResponse> {
-    const lastUserMessage = messages.filter(m => m.role === 'user').pop();
+    const lastUserMessage = messages.filter(m => m.role === ('user' as MessageRole)).pop();
     const promptText = lastUserMessage ? lastUserMessage.content : 'No query provided';
 
-    return {
+    const responseMsg: ChatMessage = {
+      id: `msg_${Date.now()}` as any,
+      role: 'assistant' as MessageRole,
       content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
-      role: 'assistant',
+      timestamp: new Date().toISOString() as ISO8601Timestamp,
+    } as any;
+
+    return {
+      message: responseMsg,
       modelId: this.config.providers.openai.defaultModel,
       providerId: 'openai',
-      finishReason: 'stop',
-      createdAt: new Date().toISOString() as ISO8601Timestamp,
+      usageTokens: {
+        promptTokens: 12,
+        completionTokens: 24,
+        totalTokens: 36
+      }
     };
   }
 }

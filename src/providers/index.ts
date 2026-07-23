@@ -16,14 +16,14 @@ export class ProviderRegistry {
 
   private registerFromConfig(config: any): void {
     if (config.providers.openai.enabled) {
-      this.providers.set('openai', {
-        providerId: 'openai' as any,
+      this.providers.set(ProviderType.OPENAI, {
+        providerId: ProviderType.OPENAI as any,
         name: 'OpenAI',
-        type: 'openai',
+        type: ProviderType.OPENAI,
         baseUrl: config.providers.openai.baseUrl,
         enabled: true,
-        capabilities: { text: true, streaming: true, functionCalling: true, vision: true, audio: false },
-      });
+        capabilities: { streaming: true, functionCalling: true, vision: true },
+      } as any);
     }
   }
 

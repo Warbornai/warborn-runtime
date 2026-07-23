@@ -18,7 +18,7 @@ class EventBus {
     }
     async publish(topic, payload, source = 'runtime') {
         const envelope = {
-            eventId: `evt_${Date.now()}`,
+            id: `evt_${Date.now()}`,
             topic,
             payload,
             timestamp: new Date().toISOString(),

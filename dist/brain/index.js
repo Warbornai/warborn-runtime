@@ -31,13 +31,21 @@ class WarbornBrain {
     async processReasoningRequest(messages) {
         const lastUserMessage = messages.filter(m => m.role === 'user').pop();
         const promptText = lastUserMessage ? lastUserMessage.content : 'No query provided';
-        return {
-            content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
+        const responseMsg = {
+            id: `msg_${Date.now()}`,
             role: 'assistant',
+            content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
+            timestamp: new Date().toISOString(),
+        };
+        return {
+            message: responseMsg,
             modelId: this.config.providers.openai.defaultModel,
             providerId: 'openai',
-            finishReason: 'stop',
-            createdAt: new Date().toISOString(),
+            usageTokens: {
+                promptTokens: 12,
+                completionTokens: 24,
+                totalTokens: 36
+            }
         };
     }
 }

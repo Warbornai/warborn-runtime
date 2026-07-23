@@ -3,8 +3,7 @@
  * Responsible for reasoning, planning, decision orchestration, task decomposition, and context/provider routing.
  * @module @warborn/runtime/brain
  */
-import { BrandedId, ISO8601Timestamp } from '@warborn/types';
-import { ChatMessage, ChatResponse } from '@warborn/types';
+import { BrandedId, ISO8601Timestamp, ChatMessage, ChatResponse } from '@warborn/types';
 import { PlatformConfig } from '@warborn/config';
 export interface BrainPlan {
     readonly planId: BrandedId<'PlanId'>;

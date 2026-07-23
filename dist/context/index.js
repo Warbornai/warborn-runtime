@@ -8,15 +8,14 @@ exports.ContextEngine = exports.MemoryManager = void 0;
 class MemoryManager {
     memories = new Map();
     storeMemory(content, type) {
-        const memoryId = `mem_${Date.now()}`;
+        const id = `mem_${Date.now()}`;
         const record = {
-            memoryId,
+            id,
             type,
             content,
-            importance: 0.8,
             createdAt: new Date().toISOString(),
         };
-        this.memories.set(memoryId, record);
+        this.memories.set(id, record);
         return record;
     }
     searchMemories(query, limit = 5) {
@@ -34,10 +33,10 @@ class ContextEngine {
     async assembleContext(userQuery) {
         const relevantMemories = this.memoryManager.searchMemories(userQuery);
         return relevantMemories.map(m => ({
-            chunkId: `chunk_${m.memoryId}`,
-            content: m.content,
-            relevanceScore: m.importance,
-            source: m.type,
+            id: `chunk_${m.id}`,
+            text: m.content,
+            score: 0.8,
+            source: String(m.type),
         }));
     }
 }

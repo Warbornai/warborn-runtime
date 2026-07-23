@@ -3,7 +3,7 @@
  * @module @warborn/runtime/workflow
  */
 
-import { Mission, MissionId, WorkflowStep, ISO8601Timestamp } from '@warborn/types';
+import { Mission, MissionId, WorkflowStep, ISO8601Timestamp, ExecutionStatus } from '@warborn/types';
 
 export class WorkflowEngine {
   private readonly missions = new Map<MissionId, Mission>();
@@ -11,13 +11,14 @@ export class WorkflowEngine {
   public createMission(title: string, steps: readonly WorkflowStep[]): Mission {
     const missionId = `mission_${Date.now()}` as MissionId;
     const mission: Mission = {
+      id: missionId as any,
       missionId,
       title,
       description: `Mission for ${title}`,
-      status: 'pending',
+      status: ExecutionStatus.PENDING,
       steps,
       createdAt: new Date().toISOString() as ISO8601Timestamp,
-    };
+    } as any;
     this.missions.set(missionId, mission);
     return mission;
   }

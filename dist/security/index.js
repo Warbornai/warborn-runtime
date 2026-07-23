@@ -7,9 +7,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PolicyEngine = void 0;
 class PolicyEngine {
     checkPermission(role, permission) {
-        if (role === 'admin' || role === 'owner')
+        const roleStr = String(role);
+        const permStr = String(permission);
+        if (roleStr === 'admin' || roleStr === 'owner')
             return true;
-        if (role === 'member' && permission !== 'admin:write')
+        if (roleStr === 'member' && permStr !== 'admin:write')
             return true;
         return false;
     }

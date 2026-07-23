@@ -23,12 +23,12 @@ export class EventBus {
 
   public async publish<T = any>(topic: EventTopic, payload: T, source = 'runtime'): Promise<EventEnvelope<T>> {
     const envelope: EventEnvelope<T> = {
-      eventId: `evt_${Date.now()}` as EventId,
+      id: `evt_${Date.now()}` as EventId,
       topic,
       payload,
       timestamp: new Date().toISOString() as ISO8601Timestamp,
       source,
-    };
+    } as any;
 
     const callbacks = this.listeners.get(topic);
     if (callbacks) {

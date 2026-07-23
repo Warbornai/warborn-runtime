@@ -16,7 +16,7 @@ export class AgentRegistry {
       status: ExecutionStatus.IDLE,
       currentMissionId: undefined,
       lastActiveAt: new Date().toISOString() as ISO8601Timestamp,
-    };
+    } as any;
     this.agents.set(agentId, instance);
     return instance;
   }
