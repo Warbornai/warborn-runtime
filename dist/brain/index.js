@@ -7,25 +7,32 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.WarbornBrain = void 0;
 const config_1 = require("@warborn/config");
+const reasoning_1 = require("../reasoning");
 class WarbornBrain {
     config;
+    planner = new reasoning_1.PlannerEngine();
     constructor(config) {
         this.config = config || (0, config_1.getPlatformConfig)();
     }
     /** Decompose a high-level goal into an executable multi-step plan */
     async decomposeGoal(goal) {
-        const planId = `plan_${Date.now()}`;
+        const plan = await this.planner.createExecutionPlan(goal);
+        const steps = plan.stages.flatMap(stage => stage.steps.map(s => ({
+            stepId: s.stepId,
+            description: s.description,
+            assignedAgentRole: s.assignedAgentRole,
+            status: 'pending',
+        })));
         return {
-            planId,
-            goal,
-            steps: [
-                { stepId: 'step_1', description: 'Analyze intent and extract context', status: 'pending' },
-                { stepId: 'step_2', description: 'Query memory and knowledge vectors', status: 'pending' },
-                { stepId: 'step_3', description: 'Select optimal model provider', status: 'pending' },
-                { stepId: 'step_4', description: 'Execute tool actions and synthesize response', status: 'pending' },
-            ],
-            createdAt: new Date().toISOString(),
+            planId: plan.planId,
+            goal: plan.goal,
+            steps,
+            createdAt: plan.createdAt,
         };
+    }
+    /** Create a full Cognitive ExecutionPlan */
+    async planExecution(goal) {
+        return this.planner.createExecutionPlan(goal);
     }
     /** Orchestrate reasoning and return response using active provider router */
     async processReasoningRequest(messages) {
@@ -34,18 +41,18 @@ class WarbornBrain {
         const responseMsg = {
             id: `msg_${Date.now()}`,
             role: 'assistant',
-            content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
+            content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using Amazon Bedrock / OpenAI Provider Router.`,
             timestamp: new Date().toISOString(),
         };
         return {
             message: responseMsg,
             modelId: this.config.providers.openai.defaultModel,
-            providerId: 'openai',
+            providerId: 'AMAZON_BEDROCK',
             usageTokens: {
                 promptTokens: 12,
                 completionTokens: 24,
-                totalTokens: 36
-            }
+                totalTokens: 36,
+            },
         };
     }
 }

@@ -18,6 +18,7 @@ export * from './brain';
 export * from './agents';
 export * from './context';
 export * from './memory';
+export * from './reasoning';
 export * from './providers';
 export * from './workflow';
 export * from './events';

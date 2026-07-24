@@ -34,6 +34,7 @@ __exportStar(require("./brain"), exports);
 __exportStar(require("./agents"), exports);
 __exportStar(require("./context"), exports);
 __exportStar(require("./memory"), exports);
+__exportStar(require("./reasoning"), exports);
 __exportStar(require("./providers"), exports);
 __exportStar(require("./workflow"), exports);
 __exportStar(require("./events"), exports);

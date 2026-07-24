@@ -4,8 +4,9 @@
  * @module @warborn/runtime/brain
  */
 
-import { BrandedId, ISO8601Timestamp, ChatMessage, ChatResponse, MessageRole } from '@warborn/types';
+import { BrandedId, ISO8601Timestamp, ChatMessage, ChatResponse, MessageRole, ExecutionPlan } from '@warborn/types';
 import { PlatformConfig, getPlatformConfig } from '@warborn/config';
+import { PlannerEngine } from '../reasoning';
 
 export interface BrainPlan {
   readonly planId: BrandedId<'PlanId'>;
@@ -21,6 +22,7 @@ export interface BrainPlan {
 
 export class WarbornBrain {
   private readonly config: PlatformConfig;
+  public readonly planner = new PlannerEngine();
 
   constructor(config?: PlatformConfig) {
     this.config = config || getPlatformConfig();
@@ -28,18 +30,27 @@ export class WarbornBrain {
 
   /** Decompose a high-level goal into an executable multi-step plan */
   public async decomposeGoal(goal: string): Promise<BrainPlan> {
-    const planId = `plan_${Date.now()}` as BrandedId<'PlanId'>;
+    const plan = await this.planner.createExecutionPlan(goal);
+    const steps = plan.stages.flatMap(stage =>
+      stage.steps.map(s => ({
+        stepId: s.stepId,
+        description: s.description,
+        assignedAgentRole: s.assignedAgentRole,
+        status: 'pending' as const,
+      }))
+    );
+
     return {
-      planId,
-      goal,
-      steps: [
-        { stepId: 'step_1', description: 'Analyze intent and extract context', status: 'pending' },
-        { stepId: 'step_2', description: 'Query memory and knowledge vectors', status: 'pending' },
-        { stepId: 'step_3', description: 'Select optimal model provider', status: 'pending' },
-        { stepId: 'step_4', description: 'Execute tool actions and synthesize response', status: 'pending' },
-      ],
-      createdAt: new Date().toISOString() as ISO8601Timestamp,
+      planId: plan.planId as BrandedId<'PlanId'>,
+      goal: plan.goal,
+      steps,
+      createdAt: plan.createdAt,
     };
+  }
+
+  /** Create a full Cognitive ExecutionPlan */
+  public async planExecution(goal: string): Promise<ExecutionPlan> {
+    return this.planner.createExecutionPlan(goal);
   }
 
   /** Orchestrate reasoning and return response using active provider router */
@@ -50,19 +61,19 @@ export class WarbornBrain {
     const responseMsg: ChatMessage = {
       id: `msg_${Date.now()}` as any,
       role: 'assistant' as MessageRole,
-      content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using ${this.config.providers.openai.defaultModel}.`,
+      content: `[Warborn Brain Reasoning]: Processed query "${promptText}" using Amazon Bedrock / OpenAI Provider Router.`,
       timestamp: new Date().toISOString() as ISO8601Timestamp,
     } as any;
 
     return {
       message: responseMsg,
       modelId: this.config.providers.openai.defaultModel,
-      providerId: 'openai',
+      providerId: 'AMAZON_BEDROCK',
       usageTokens: {
         promptTokens: 12,
         completionTokens: 24,
-        totalTokens: 36
-      }
+        totalTokens: 36,
+      },
     };
   }
 }
