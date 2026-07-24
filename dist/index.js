@@ -1,7 +1,7 @@
 "use strict";
 /**
  * @warborn/runtime - The Headless Brain & Operating System Kernel for Warborn OS
- * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, and Events.
+ * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, and Events.
  * @packageDocumentation
  */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -25,6 +25,7 @@ const brain_1 = require("./brain");
 const agents_1 = require("./agents");
 const context_1 = require("./context");
 const memory_1 = require("./memory");
+const tools_1 = require("./tools");
 const providers_1 = require("./providers");
 const workflow_1 = require("./workflow");
 const events_1 = require("./events");
@@ -35,6 +36,7 @@ __exportStar(require("./agents"), exports);
 __exportStar(require("./context"), exports);
 __exportStar(require("./memory"), exports);
 __exportStar(require("./reasoning"), exports);
+__exportStar(require("./tools"), exports);
 __exportStar(require("./providers"), exports);
 __exportStar(require("./workflow"), exports);
 __exportStar(require("./events"), exports);
@@ -44,6 +46,7 @@ class WarbornRuntimeEngine {
     agentRegistry;
     memoryManager;
     contextEngine;
+    toolRuntime;
     providerRegistry;
     workflowEngine;
     eventBus;
@@ -55,6 +58,7 @@ class WarbornRuntimeEngine {
         this.agentRegistry = new agents_1.AgentRegistry();
         this.memoryManager = new memory_1.MemoryEngine();
         this.contextEngine = new context_1.ContextEngine(this.memoryManager);
+        this.toolRuntime = new tools_1.ToolRuntime();
         this.providerRegistry = new providers_1.ProviderRegistry();
         this.workflowEngine = new workflow_1.WorkflowEngine();
         this.eventBus = new events_1.EventBus();
