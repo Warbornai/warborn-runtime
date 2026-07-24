@@ -44,7 +44,7 @@
     "@warborn/config": "^0.1.0"
   },
   "devDependencies": {
-    "typescript": "^5.4.0"
+    "typescript": "^7.0.2"
   },
   "author": "Warborn Technologies <support@warborn.tech>",
   "license": "MIT",
