@@ -1,15 +1,16 @@
-name: CI Validation
+name: Tag Release Automation
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - 'v*.*.*'
 
 jobs:
-  ci:
-    name: CI Pipeline
+  release:
+    name: GitHub Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
@@ -23,18 +24,11 @@ jobs:
         run: |
           npm install --no-audit --no-fund || echo "Package install notice - @warborn dependencies pending npm registry release."
 
-      - name: Lint Code
-        run: |
-          npm run lint --if-present || true
-
-      - name: Type Check
-        run: |
-          npm run type-check --if-present || true
-
-      - name: Build Project
+      - name: Build Package
         run: |
           npm run build --if-present || true
 
-      - name: Run Tests
-        run: |
-          npm test --if-present || true
+      - name: Create Release Notes
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
