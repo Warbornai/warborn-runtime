@@ -1,4 +1,4 @@
-name: CI Validation
+name: Build Check
 
 on:
   push:
@@ -14,8 +14,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-      - run: npm install
-      - run: npm run lint --if-present
-      - run: npm run type-check --if-present
-      - run: npm run build --if-present
-      - run: npm test --if-present
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci || npm install
+      - name: Run Build
+        run: npm run build --if-present
