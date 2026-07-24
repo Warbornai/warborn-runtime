@@ -1,7 +1,7 @@
 "use strict";
 /**
  * @warborn/runtime - The Headless Brain & Operating System Kernel for Warborn OS
- * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, and Events.
+ * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, Missions, and Events.
  * @packageDocumentation
  */
 var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
@@ -47,6 +47,7 @@ class WarbornRuntimeEngine {
     memoryManager;
     contextEngine;
     toolRuntime;
+    missionRuntime;
     providerRegistry;
     workflowEngine;
     eventBus;
@@ -59,6 +60,7 @@ class WarbornRuntimeEngine {
         this.memoryManager = new memory_1.MemoryEngine();
         this.contextEngine = new context_1.ContextEngine(this.memoryManager);
         this.toolRuntime = new tools_1.ToolRuntime();
+        this.missionRuntime = new workflow_1.MissionRuntime(this.toolRuntime);
         this.providerRegistry = new providers_1.ProviderRegistry();
         this.workflowEngine = new workflow_1.WorkflowEngine();
         this.eventBus = new events_1.EventBus();

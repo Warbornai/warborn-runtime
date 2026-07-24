@@ -1,6 +1,6 @@
 /**
  * @warborn/runtime - The Headless Brain & Operating System Kernel for Warborn OS
- * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, and Events.
+ * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, Missions, and Events.
  * @packageDocumentation
  */
 
@@ -10,7 +10,7 @@ import { ContextEngine } from './context';
 import { MemoryEngine } from './memory';
 import { ToolRuntime } from './tools';
 import { ProviderRegistry } from './providers';
-import { WorkflowEngine } from './workflow';
+import { WorkflowEngine, MissionRuntime } from './workflow';
 import { EventBus } from './events';
 import { PolicyEngine } from './security';
 import { PlatformConfig, getPlatformConfig } from '@warborn/config';
@@ -32,6 +32,7 @@ export class WarbornRuntimeEngine {
   public readonly memoryManager: MemoryEngine;
   public readonly contextEngine: ContextEngine;
   public readonly toolRuntime: ToolRuntime;
+  public readonly missionRuntime: MissionRuntime;
   public readonly providerRegistry: ProviderRegistry;
   public readonly workflowEngine: WorkflowEngine;
   public readonly eventBus: EventBus;
@@ -45,6 +46,7 @@ export class WarbornRuntimeEngine {
     this.memoryManager = new MemoryEngine();
     this.contextEngine = new ContextEngine(this.memoryManager as any);
     this.toolRuntime = new ToolRuntime();
+    this.missionRuntime = new MissionRuntime(this.toolRuntime);
     this.providerRegistry = new ProviderRegistry();
     this.workflowEngine = new WorkflowEngine();
     this.eventBus = new EventBus();

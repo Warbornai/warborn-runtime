@@ -1,6 +1,6 @@
 /**
  * @warborn/runtime - The Headless Brain & Operating System Kernel for Warborn OS
- * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, and Events.
+ * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, Tools, Missions, and Events.
  * @packageDocumentation
  */
 import { WarbornBrain } from './brain';
@@ -9,7 +9,7 @@ import { ContextEngine } from './context';
 import { MemoryEngine } from './memory';
 import { ToolRuntime } from './tools';
 import { ProviderRegistry } from './providers';
-import { WorkflowEngine } from './workflow';
+import { WorkflowEngine, MissionRuntime } from './workflow';
 import { EventBus } from './events';
 import { PolicyEngine } from './security';
 import { PlatformConfig } from '@warborn/config';
@@ -29,6 +29,7 @@ export declare class WarbornRuntimeEngine {
     readonly memoryManager: MemoryEngine;
     readonly contextEngine: ContextEngine;
     readonly toolRuntime: ToolRuntime;
+    readonly missionRuntime: MissionRuntime;
     readonly providerRegistry: ProviderRegistry;
     readonly workflowEngine: WorkflowEngine;
     readonly eventBus: EventBus;
