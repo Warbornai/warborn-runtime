@@ -46,6 +46,29 @@
   "devDependencies": {
     "typescript": "^5.4.0"
   },
-  "author": "Warborn Technologies",
-  "license": "MIT"
+  "author": "Warborn Technologies <support@warborn.tech>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Warbornai/warborn-runtime.git"
+  },
+  "homepage": "https://github.com/Warbornai/warborn-runtime#readme",
+  "bugs": {
+    "url": "https://github.com/Warbornai/warborn-runtime/issues"
+  },
+  "keywords": [
+    "warborn",
+    "ai-operating-system",
+    "autonomous-agents",
+    "warborn-brain",
+    "runtime"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ]
 }
