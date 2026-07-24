@@ -9,9 +9,6 @@ import {
   ContextProviderResult,
   IContextProvider,
   ISO8601Timestamp,
-  MemoryId,
-  MemoryRecord,
-  MemoryType,
 } from '@warborn/types';
 import {
   ConversationProvider,
@@ -35,35 +32,12 @@ export * from './budget';
 export * from './prompt';
 export * from './cache';
 
-export class MemoryManager {
-  private readonly memories = new Map<MemoryId, MemoryRecord>();
-
-  public storeMemory(content: string, type: MemoryType): MemoryRecord {
-    const id = `mem_${Date.now()}` as MemoryId;
-    const record: MemoryRecord = {
-      id,
-      type,
-      content,
-      metadata: {},
-      createdAt: new Date().toISOString() as ISO8601Timestamp,
-    };
-    this.memories.set(id, record);
-    return record;
-  }
-
-  public searchMemories(query: string, limit = 5): readonly MemoryRecord[] {
-    return Array.from(this.memories.values())
-      .filter(m => m.content.toLowerCase().includes(query.toLowerCase()))
-      .slice(0, limit);
-  }
-}
-
 export class ContextEngine {
   private readonly providers: IContextProvider[] = [];
   private readonly cache = new ContextCache();
   private readonly budgetManager = new TokenBudgetManager();
 
-  constructor(public readonly memoryManager?: MemoryManager) {
+  constructor(public readonly memoryManager?: any) {
     // Register default context providers
     this.registerProvider(new ConversationProvider());
     this.registerProvider(new WorkingMemoryProvider());

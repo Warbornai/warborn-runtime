@@ -1,12 +1,13 @@
 /**
  * @warborn/runtime - The Headless Brain & Operating System Kernel for Warborn OS
- * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, and Events.
+ * Central Orchestration Engine for Agents, Reasoning, Workflows, Context, Providers, Memory, and Events.
  * @packageDocumentation
  */
 
 import { WarbornBrain } from './brain';
 import { AgentRegistry } from './agents';
-import { MemoryManager, ContextEngine } from './context';
+import { ContextEngine } from './context';
+import { MemoryEngine } from './memory';
 import { ProviderRegistry } from './providers';
 import { WorkflowEngine } from './workflow';
 import { EventBus } from './events';
@@ -16,6 +17,7 @@ import { PlatformConfig, getPlatformConfig } from '@warborn/config';
 export * from './brain';
 export * from './agents';
 export * from './context';
+export * from './memory';
 export * from './providers';
 export * from './workflow';
 export * from './events';
@@ -24,7 +26,7 @@ export * from './security';
 export class WarbornRuntimeEngine {
   public readonly brain: WarbornBrain;
   public readonly agentRegistry: AgentRegistry;
-  public readonly memoryManager: MemoryManager;
+  public readonly memoryManager: MemoryEngine;
   public readonly contextEngine: ContextEngine;
   public readonly providerRegistry: ProviderRegistry;
   public readonly workflowEngine: WorkflowEngine;
@@ -36,8 +38,8 @@ export class WarbornRuntimeEngine {
     this.config = config || getPlatformConfig();
     this.brain = new WarbornBrain(this.config);
     this.agentRegistry = new AgentRegistry();
-    this.memoryManager = new MemoryManager();
-    this.contextEngine = new ContextEngine(this.memoryManager);
+    this.memoryManager = new MemoryEngine();
+    this.contextEngine = new ContextEngine(this.memoryManager as any);
     this.providerRegistry = new ProviderRegistry();
     this.workflowEngine = new WorkflowEngine();
     this.eventBus = new EventBus();

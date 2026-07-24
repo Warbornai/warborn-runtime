@@ -18,7 +18,7 @@ var __exportStar = (this && this.__exportStar) || function(m, exports) {
     for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContextEngine = exports.MemoryManager = void 0;
+exports.ContextEngine = void 0;
 const providers_1 = require("./providers");
 const ranker_1 = require("./ranker");
 const budget_1 = require("./budget");
@@ -30,27 +30,6 @@ __exportStar(require("./ranker"), exports);
 __exportStar(require("./budget"), exports);
 __exportStar(require("./prompt"), exports);
 __exportStar(require("./cache"), exports);
-class MemoryManager {
-    memories = new Map();
-    storeMemory(content, type) {
-        const id = `mem_${Date.now()}`;
-        const record = {
-            id,
-            type,
-            content,
-            metadata: {},
-            createdAt: new Date().toISOString(),
-        };
-        this.memories.set(id, record);
-        return record;
-    }
-    searchMemories(query, limit = 5) {
-        return Array.from(this.memories.values())
-            .filter(m => m.content.toLowerCase().includes(query.toLowerCase()))
-            .slice(0, limit);
-    }
-}
-exports.MemoryManager = MemoryManager;
 class ContextEngine {
     memoryManager;
     providers = [];
