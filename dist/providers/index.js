@@ -1,32 +1,49 @@
 "use strict";
 /**
- * Multi-Provider AI Routing and Fallback Engine.
+ * Multi-Provider AI Routing and Fallback Engine for Warborn OS.
  * @module @warborn/runtime/providers
  */
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProviderRegistry = void 0;
-const types_1 = require("@warborn/types");
-const config_1 = require("@warborn/config");
+exports.getProviderRouter = getProviderRouter;
+__exportStar(require("./types"), exports);
+__exportStar(require("./middleware"), exports);
+__exportStar(require("./telemetry"), exports);
+__exportStar(require("./bedrock"), exports);
+__exportStar(require("./router"), exports);
+const router_1 = require("./router");
+const bedrock_1 = require("./bedrock");
+let cachedRouter = null;
+function getProviderRouter() {
+    if (!cachedRouter) {
+        cachedRouter = new router_1.ProviderRouter();
+    }
+    return cachedRouter;
+}
 class ProviderRegistry {
-    providers = new Map();
-    constructor() {
-        const platformConfig = (0, config_1.getPlatformConfig)();
-        this.registerFromConfig(platformConfig);
+    router = getProviderRouter();
+    getBedrockProvider() {
+        return this.router.getProvider(bedrock_1.BedrockProvider.prototype.providerType);
     }
-    registerFromConfig(config) {
-        if (config.providers.openai.enabled) {
-            this.providers.set(types_1.ProviderType.OPENAI, {
-                providerId: types_1.ProviderType.OPENAI,
-                name: 'OpenAI',
-                type: types_1.ProviderType.OPENAI,
-                baseUrl: config.providers.openai.baseUrl,
-                enabled: true,
-                capabilities: { streaming: true, functionCalling: true, vision: true },
-            });
-        }
+    getActiveProvider(type) {
+        return this.router.getProvider(type);
     }
-    getProvider(type) {
-        return this.providers.get(type);
+    async checkHealth() {
+        return this.router.checkAllHealth();
     }
 }
 exports.ProviderRegistry = ProviderRegistry;

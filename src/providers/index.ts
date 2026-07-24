@@ -1,33 +1,38 @@
 /**
- * Multi-Provider AI Routing and Fallback Engine.
+ * Multi-Provider AI Routing and Fallback Engine for Warborn OS.
  * @module @warborn/runtime/providers
  */
 
-import { ProviderConfig, ProviderType } from '@warborn/types';
-import { getPlatformConfig } from '@warborn/config';
+export * from './types';
+export * from './middleware';
+export * from './telemetry';
+export * from './bedrock';
+export * from './router';
+
+import { ProviderRouter } from './router';
+import { BedrockProvider } from './bedrock';
+
+let cachedRouter: ProviderRouter | null = null;
+
+export function getProviderRouter(): ProviderRouter {
+  if (!cachedRouter) {
+    cachedRouter = new ProviderRouter();
+  }
+  return cachedRouter;
+}
 
 export class ProviderRegistry {
-  private readonly providers = new Map<ProviderType, ProviderConfig>();
+  private readonly router = getProviderRouter();
 
-  constructor() {
-    const platformConfig = getPlatformConfig();
-    this.registerFromConfig(platformConfig);
+  public getBedrockProvider(): BedrockProvider {
+    return this.router.getProvider(BedrockProvider.prototype.providerType as any) as BedrockProvider;
   }
 
-  private registerFromConfig(config: any): void {
-    if (config.providers.openai.enabled) {
-      this.providers.set(ProviderType.OPENAI, {
-        providerId: ProviderType.OPENAI as any,
-        name: 'OpenAI',
-        type: ProviderType.OPENAI,
-        baseUrl: config.providers.openai.baseUrl,
-        enabled: true,
-        capabilities: { streaming: true, functionCalling: true, vision: true },
-      } as any);
-    }
+  public getActiveProvider(type?: any) {
+    return this.router.getProvider(type);
   }
 
-  public getProvider(type: ProviderType): ProviderConfig | undefined {
-    return this.providers.get(type);
+  public async checkHealth() {
+    return this.router.checkAllHealth();
   }
 }
