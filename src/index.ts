@@ -11,7 +11,7 @@ import { MemoryEngine } from './memory';
 import { ToolRuntime } from './tools';
 import { ProviderRegistry } from './providers';
 import { WorkflowEngine, MissionRuntime } from './workflow';
-import { EventBus } from './events';
+import { EventBus, EventRuntime } from './events';
 import { PolicyEngine } from './security';
 import { PlatformConfig, getPlatformConfig } from '@warborn/config';
 
@@ -33,6 +33,7 @@ export class WarbornRuntimeEngine {
   public readonly contextEngine: ContextEngine;
   public readonly toolRuntime: ToolRuntime;
   public readonly missionRuntime: MissionRuntime;
+  public readonly eventRuntime: EventRuntime;
   public readonly providerRegistry: ProviderRegistry;
   public readonly workflowEngine: WorkflowEngine;
   public readonly eventBus: EventBus;
@@ -47,6 +48,7 @@ export class WarbornRuntimeEngine {
     this.contextEngine = new ContextEngine(this.memoryManager as any);
     this.toolRuntime = new ToolRuntime();
     this.missionRuntime = new MissionRuntime(this.toolRuntime);
+    this.eventRuntime = new EventRuntime();
     this.providerRegistry = new ProviderRegistry();
     this.workflowEngine = new WorkflowEngine();
     this.eventBus = new EventBus();

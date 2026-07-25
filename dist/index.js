@@ -48,6 +48,7 @@ class WarbornRuntimeEngine {
     contextEngine;
     toolRuntime;
     missionRuntime;
+    eventRuntime;
     providerRegistry;
     workflowEngine;
     eventBus;
@@ -61,6 +62,7 @@ class WarbornRuntimeEngine {
         this.contextEngine = new context_1.ContextEngine(this.memoryManager);
         this.toolRuntime = new tools_1.ToolRuntime();
         this.missionRuntime = new workflow_1.MissionRuntime(this.toolRuntime);
+        this.eventRuntime = new events_1.EventRuntime();
         this.providerRegistry = new providers_1.ProviderRegistry();
         this.workflowEngine = new workflow_1.WorkflowEngine();
         this.eventBus = new events_1.EventBus();

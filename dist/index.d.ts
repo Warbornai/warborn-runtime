@@ -10,7 +10,7 @@ import { MemoryEngine } from './memory';
 import { ToolRuntime } from './tools';
 import { ProviderRegistry } from './providers';
 import { WorkflowEngine, MissionRuntime } from './workflow';
-import { EventBus } from './events';
+import { EventBus, EventRuntime } from './events';
 import { PolicyEngine } from './security';
 import { PlatformConfig } from '@warborn/config';
 export * from './brain';
@@ -30,6 +30,7 @@ export declare class WarbornRuntimeEngine {
     readonly contextEngine: ContextEngine;
     readonly toolRuntime: ToolRuntime;
     readonly missionRuntime: MissionRuntime;
+    readonly eventRuntime: EventRuntime;
     readonly providerRegistry: ProviderRegistry;
     readonly workflowEngine: WorkflowEngine;
     readonly eventBus: EventBus;
